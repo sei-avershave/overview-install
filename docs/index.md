@@ -54,7 +54,9 @@
 
 ## Docker Images
 
-> Quick Note: These images mean that there isn't a Helm repository being used to deploy these applications but are currently being used by us. To create a deployment, please view the Kubernetes deployment documentation.
+!!! note
+
+    These images mean that there isn't a Helm repository being used to deploy these applications but are currently being used by us. To create a deployment, please view the Kubernetes deployment documentation.
 
 We primarily use these images in setting up a email server. The above Helm charts will pull the correct Docker images. This is completely optional but is what we use during certain exercises.
 
@@ -74,34 +76,36 @@ You are able to run the full Crucible stack on minimal hardware. We usually run 
 
 This stack is very dependent on TLS. Please create certificates and add them as secrets into the cluster. Down below will create self-signed certificates for testing. If you are going to install this into production, you will have to change these.
 
-``` json
-{
-  "names": [
+??? example
+
+    ``` json
     {
-      "C": "US"
+      "names": [
+        {
+          "C": "US"
+        }
+      ],
+      "key": {
+        "algo": "rsa",
+        "size": 2048
+      },
+      "CN": "Foundry Appliance Host",
+      "hosts": ["$DOMAIN", "*.$DOMAIN"]
     }
-  ],
-  "key": {
-    "algo": "rsa",
-    "size": 2048
-  },
-  "CN": "Foundry Appliance Host",
-  "hosts": ["$DOMAIN", "*.$DOMAIN"]
-}
-```
+    ```
 
-``` bash
-cfssl gencert -initca certificates/root-ca.json | cfssljson -bare root-ca
-cfssl gencert -ca certificates/root-ca.pem -ca-key certificates/root-ca-key.pem -config certificates/config.json \
-            -profile intca certificates/int-ca.json | cfssljson -bare int-ca
-cfssl gencert -ca certificates/int-ca.pem -ca-key certificates/int-ca-key.pem -config certificates/config.json \
-            -profile server certificates/host.json | cfssljson -bare host
-```
+    ``` bash
+    cfssl gencert -initca certificates/root-ca.json | cfssljson -bare root-ca
+    cfssl gencert -ca certificates/root-ca.pem -ca-key certificates/root-ca-key.pem -config certificates/config.json \
+                -profile intca certificates/int-ca.json | cfssljson -bare int-ca
+    cfssl gencert -ca certificates/int-ca.pem -ca-key certificates/int-ca-key.pem -config certificates/config.json \
+                -profile server certificates/host.json | cfssljson -bare host
+    ```
 
-``` bash
-kubectl create secret tls appliance-cert --key certificates/host-key.pem --cert <( cat certificates/host.pem certificates/int-ca.pem ) --dry-run=client -o yaml | kubectl apply -f -
-kubectl create secret generic appliance-root-ca --from-file=appliance-root-ca=certificates/root-ca.pem --dry-run=client -o yaml | kubectl apply -f -
-```
+    ``` bash
+    kubectl create secret tls appliance-cert --key certificates/host-key.pem --cert <( cat certificates/host.pem certificates/int-ca.pem ) --dry-run=client -o yaml | kubectl apply -f -
+    kubectl create secret generic appliance-root-ca --from-file=appliance-root-ca=certificates/root-ca.pem --dry-run=client -o yaml | kubectl apply -f -
+    ```
 
 ## Loadbalancer
 
