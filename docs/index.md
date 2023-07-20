@@ -114,47 +114,59 @@ If you're using a cloud provider for your Kubernetes cluster, you do not have to
 - [Helm Install MetalLB](https://metallb.universe.tf/installation/#installation-with-helm)
 - [Configuring MetalLB](https://metallb.universe.tf/configuration/)
 
-``` bash
-helm upgrade -i metallb metallb/metallb --namespace metallb-system --create-namespace
-```
+??? example
+
+    ``` bash
+    helm upgrade -i metallb metallb/metallb --namespace metallb-system --create-namespace
+    ```
 
 ## Ingress
 
 In order to access these services, you need to be able to communicate to the cluster. The easiest way to do this is to add `ingress-nginx` to your cluster. Before you install this, you have to have an active loadbalancer. Here's a one liner using Helm to install `ingress-nginx`:
 
-``` bash
-helm upgrade -i nginx ingress-nginx/ingress-nginx --namespace nginx --create-namespace --set controller.watchIngressWithoutClass=true --set controller.kind=Deployment --set controller.ingressClassResource.name=nginx --set controller.ingressClassResource.default=true --set controller.ingressClass=nginx
-```
+??? example
+
+    ``` bash
+    helm upgrade -i nginx ingress-nginx/ingress-nginx --namespace nginx --create-namespace --set controller.watchIngressWithoutClass=true --set controller.kind=Deployment --set controller.ingressClassResource.name=nginx --set controller.ingressClassResource.default=true --set controller.ingressClass=nginx
+    ```
 
 ## Rancher
 
 K3s is created by Rancher but Rancher itself is a GUI to help configure your Kubernetes cluster if you are already using K3s. If you are not using K3s, please do not install this application. Rancher will also help you get to and configure Longhorn.
 
-``` bash
-helm upgrade -i rancher rancher-stable/rancher --namespace cattle-system --create-namespace --set bootstrapPassword=$RANCHER_PASS --set replicas=1 --set auditLog.level=2 --set auditLog.destination=hostPath --set hostname=rancher.$DOMAIN --set ingress.tls.source=secret --set ingress.tls.secretName=name-of-certificate
-```
+??? example
+
+    ``` bash
+    helm upgrade -i rancher rancher-stable/rancher --namespace cattle-system --create-namespace --set bootstrapPassword=$RANCHER_PASS --set replicas=1 --set auditLog.level=2 --set auditLog.destination=hostPath --set hostname=rancher.$DOMAIN --set ingress.tls.source=secret --set ingress.tls.secretName=name-of-certificate
+    ```
 
 ## Longhorn
 
 Longhorn is used to easily manage, create, and backup persistent volumes and persistent volume claims. You do not have to install this but you will have to manage your own PV's and PVC's if you are not using a cloud provider.
 
-``` bash
-helm upgrade -i longhorn longhorn/longhorn --namespace longhorn-system --create-namespace --set persistance.defaultClassReplicaCount=1 --wait
-```
+??? example
+
+    ``` bash
+    helm upgrade -i longhorn longhorn/longhorn --namespace longhorn-system --create-namespace --set persistance.defaultClassReplicaCount=1 --wait
+    ```
 
 ## PostgreSQL and pgAdmin
 
 Majority of the applications above use PostgreSQL. We also use pgAdmin to help manage the database. This may differ if you're using a cloud provider.
 
-``` bash
-helm upgrade -i postgresql bitnami/postgresql --set global.storageClass=longhorn --set global.postgresql.auth.postgresPassword=$POSTGRES_PASS
-```
+??? example
+
+    ``` bash
+    helm upgrade -i postgresql bitnami/postgresql --set global.storageClass=longhorn --set global.postgresql.auth.postgresPassword=$POSTGRES_PASS
+    ```
 
 [Here's the chart for pgAdmin that we use.](https://github.com/rowanruseler/helm-charts/blob/master/charts/pgadmin4/values.yaml)
 
-``` bash
-helm upgrade -i pgadmin runix/pgadmin4 -f -
-```
+??? example
+
+    ``` bash
+    helm upgrade -i pgadmin runix/pgadmin4 -f -
+    ```
 
 ## Crucible Installation
 
