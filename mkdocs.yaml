@@ -1,12 +1,4 @@
 site_name: Crucible Overview Install Documentation
-markdown_extensions:
-  - pymdownx.highlight:
-      anchor_linenums: true
-      line_spans: __span
-      pygments_lang_class: true
-  - pymdownx.inlinehilite
-  - pymdownx.snippets
-  - pymdownx.superfences
 theme:
   name: material
   features:
@@ -31,5 +23,13 @@ theme:
         icon: material/brightness-4
         name: Switch to light mode
       primary: red
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
 nav:
   - Install: index.md
