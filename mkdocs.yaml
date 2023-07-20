@@ -1,7 +1,6 @@
 site_name: Crucible Overview Install Documentation
 theme:
   name: material
-  custom_dir: material/overrides
   features:
     - navigation.tabs
     - navigation.tabs.sticky
