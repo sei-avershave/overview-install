@@ -10,7 +10,7 @@
 
 - Helm
 - oAuth Provider
-  - We currently use [IdentityServer](https://identityserver4.readthedocs.io/en/latest/) and [Keycloak](https://www.keycloak.org/documentation)
+  + We currently use [IdentityServer](https://identityserver4.readthedocs.io/en/latest/) and [Keycloak](https://www.keycloak.org/documentation)
 
 ## Crucible Applications and GitHub Pages
 
@@ -91,11 +91,11 @@ This stack is very dependent on TLS. Please create certificates and add them as 
 ```
 
 ``` bash
-    cfssl gencert -initca certificates/root-ca.json | cfssljson -bare root-ca
-    cfssl gencert -ca certificates/root-ca.pem -ca-key certificates/root-ca-key.pem -config certificates/config.json \
-                -profile intca certificates/int-ca.json | cfssljson -bare int-ca
-    cfssl gencert -ca certificates/int-ca.pem -ca-key certificates/int-ca-key.pem -config certificates/config.json \
-                -profile server certificates/host.json | cfssljson -bare host
+cfssl gencert -initca certificates/root-ca.json | cfssljson -bare root-ca
+cfssl gencert -ca certificates/root-ca.pem -ca-key certificates/root-ca-key.pem -config certificates/config.json \
+            -profile intca certificates/int-ca.json | cfssljson -bare int-ca
+cfssl gencert -ca certificates/int-ca.pem -ca-key certificates/int-ca-key.pem -config certificates/config.json \
+            -profile server certificates/host.json | cfssljson -bare host
 ```
 
 ``` bash
